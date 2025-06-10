@@ -8,6 +8,6 @@
 
 
 void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLine);
-//void parseFile(char ***buff);
+void parseBuff(char ***buff, char ***bookTitle, char ***bookUrl, int *maxLine);
 
 #endif

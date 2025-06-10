@@ -14,6 +14,7 @@ static int countLine(FILE *fp){
 	fseek(fp, curPos, SEEK_SET);
 	return lines;
 }
+
 void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLine){
 	FILE *fp;
 	char filename[256];
@@ -53,12 +54,23 @@ void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLi
 	}
 	while(fgets((*buff)[lineCount], MAX_LINE_LEN, fp) != NULL && lineCount < *maxLine){
 		(*buff)[lineCount][strcspn((*buff)[lineCount], "\n")] = '\0';
-		printf("%d: %s\n", lineCount+1, (*buff)[lineCount]);
 		lineCount++;
 	}
 	*fileRead = 1;
 	fclose(fp);
 }
 
-//void parseFile(char ***buff)
+void parseBuff(char ***buff, char ***bookTitle, char ***bookUrl, int *maxLine){
+	*bookTitle = malloc(*maxLine * sizeof(char *));
+	*bookUrl = malloc(*maxLine * sizeof(char *));
+	for(int i=0; i<*maxLine; i++){
+		(*bookTitle)[i] = malloc(MAX_LINE_LEN);
+		(*bookUrl)[i] = malloc(MAX_LINE_LEN);
+	}
+	for(int j=0; j<*maxLine; j++){
+		strcpy((*bookTitle)[j], strtok((*buff)[j], ","));
+		strcpy((*bookUrl)[j], strtok(NULL, ","));
+	}
+	return;
+}
 
