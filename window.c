@@ -3,6 +3,8 @@
 #include <raylib.h>
 #include "window.h"
 
+#define R_PLUM 0xe501fdff
+
 typedef enum{
 	GREET = 0,
 	YEAR = 1,
@@ -17,7 +19,7 @@ void makeBox(Rectangle **border, Rectangle **padbox, int *optionPtr, int *Ypos, 
 
 void showBox(Rectangle **border, Rectangle **padbox, int *optionPtr, int *Ypos, int *scrollOffset, int *scrWidth, Vector2 *mousePos, int *targetPtr){
 	DrawRectangleRounded((*border)[*optionPtr], 0.35f, 10, WHITE);
-	DrawRectangleRounded((*padbox)[*optionPtr], 0.35f, 10, GRAY);
+	DrawRectangleRounded((*padbox)[*optionPtr], 0.35f, 10, GetColor(R_PLUM));
 	if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(*mousePos, (*padbox)[*optionPtr])){
 		*targetPtr = *optionPtr + 1;
 		printf("optionPtr: %d\n", *optionPtr);
@@ -71,7 +73,8 @@ int main(){
 				break;
 		}
 		printf("eduLvl: %d\n", eduLvl);
-		if(eduLvl) scr = YEAR;
+		if(year) scr = CATALOGUE;
+		else if(eduLvl)	scr = YEAR;
 		printf("scr: %d\n", scr);
 		
 		EndDrawing();

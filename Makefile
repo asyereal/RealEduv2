@@ -1,4 +1,4 @@
-CC = gcc
+CC = cc
 CCFLAGS = -g -c
 
 SRC = main.c read.c fetch.c
