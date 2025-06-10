@@ -16,22 +16,25 @@ static int countLine(FILE *fp){
 	return lines;
 }
 
-void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLine){
+void readFile(int *eduLvl, int *year, int *fileRead, char ***buff, int *maxLine){
 	FILE *fp;
 	char filename[20];
 	int lineCount = 0;
 	int i;
+	int retryLimit = 0;
 
-	if(*isPrimary) snprintf(filename, 20, "year%d.csv", *year);
-	else snprintf(filename, 20, "form%d.csv", *year);
+	if(*eduLvl == 1) snprintf(filename, 20, "year%d.csv", *year);
+	else if (*eduLvl == 2) snprintf(filename, 20, "form%d.csv", *year);
+	else printf("what's the education level\n");
 	char url[100];
 	snprintf(url, sizeof(url), "http://localhost/Pri_db/%s", filename);
 
 	//fp = fopen(filename, "r");
 	printf("filename: %s\n", filename);
-	while(!(fp = fopen(getPath(filename), "r"))){
+	while(!(fp = fopen(getPath(filename), "r")) && retryLimit < 5){
 		perror("File doesn't exist! Downloading...\n");
 		fetchFile(url, getPath(filename));
+		retryLimit++;
 	}
 	*maxLine = countLine(fp);
 	*buff = malloc(*maxLine * sizeof(char *));
