@@ -7,7 +7,7 @@ int main()
 {
 	// placeholding variables
 	int isPrimary = 1;
-	int year = 5;
+	int year = 1;
 	char **buff;
 	char **bookTitle;
 	char **bookFile;

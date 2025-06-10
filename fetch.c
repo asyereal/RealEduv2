@@ -32,14 +32,3 @@ const char *getPath(char *filename){
 #endif
 	return path;
 }
-/*
-int main(){
-	const char *url = "http://localhost/Pri_db/year2.csv";
-
-	const char *path = getPath();
-	printf("%s\n", path);
-	fetchFile(url, path);
-
-	return 0;
-}
-*/
