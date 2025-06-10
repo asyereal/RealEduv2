@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "read.h"
+#include "fetch.h"
 
 static int countLine(FILE *fp){
 	int lines = 0;
@@ -17,18 +18,20 @@ static int countLine(FILE *fp){
 
 void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLine){
 	FILE *fp;
-	char filename[256];
+	char filename[20];
 	int lineCount = 0;
 	int i;
 
-	if(*isPrimary) snprintf(filename, 40, "sandbox/year%d.csv", *year);
-	else snprintf(filename, 20, "sandbox/form%d.csv", *year);
+	if(*isPrimary) snprintf(filename, 20, "year%d.csv", *year);
+	else snprintf(filename, 20, "form%d.csv", *year);
+	char url[100];
+	snprintf(url, sizeof(url), "http://localhost/Pri_db/%s", filename);
 
-	fp = fopen(filename, "r");
-	if(!fp){
-		perror("Error Loading file!\n");
-		*fileRead = 0;
-		return;
+	//fp = fopen(filename, "r");
+	printf("filename: %s\n", filename);
+	while(!(fp = fopen(getPath(filename), "r"))){
+		perror("File doesn't exist! Downloading...\n");
+		fetchFile(url, getPath(filename));
 	}
 	*maxLine = countLine(fp);
 	*buff = malloc(*maxLine * sizeof(char *));
