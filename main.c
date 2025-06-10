@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "read.h"
-//#include "fetch.h"
 #include "window.h"
 
 int main()
@@ -34,9 +33,6 @@ int main()
 	Rectangle *border = malloc(sizeof(Rectangle)*6);
 	Rectangle *padbox = malloc(sizeof(Rectangle)*6);
 	Rectangle *tempBox;
-
-	//fetch the file
-	//fetchFile();
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(scrWidth, scrHeight, "RealEdu");

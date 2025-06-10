@@ -25,12 +25,10 @@ void readFile(int *eduLvl, int *year, int *fileRead, char ***buff, int *maxLine)
 
 	if(*eduLvl == 1) snprintf(filename, 20, "year%d.csv", *year);
 	else if (*eduLvl == 2) snprintf(filename, 20, "form%d.csv", *year);
-	else printf("what's the education level\n");
 	char url[100];
 	snprintf(url, sizeof(url), "http://localhost/Pri_db/%s", filename);
 
 	//fp = fopen(filename, "r");
-	printf("filename: %s\n", filename);
 	while(!(fp = fopen(getPath(filename), "r")) && retryLimit < 5){
 		perror("File doesn't exist! Downloading...\n");
 		fetchFile(url, getPath(filename));
