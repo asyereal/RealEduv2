@@ -5,9 +5,8 @@
 
 typedef enum{
 	GREET = 0,
-	PRIMARY = 1,
-	SECONDARY = 3,
-	CATALOGUE = 4
+	YEAR = 1,
+	CATALOGUE = 2
 } Screen;
 
 void makeBox(Rectangle **border, Rectangle **padbox, int *optionPtr, int *Ypos, int *scrollOffset, int *scrWidth, Vector2 *mousePos){
@@ -34,8 +33,8 @@ int main(){
 	int scrollSpeed = 20;
 	Vector2 mousePos;
 	int year = 0;
-	int scrPtr = 0;
 	int Ypos = 116;
+	int eduLvl = 0;
 
 	Rectangle *border = malloc(sizeof(Rectangle)*6);
 	Rectangle *padbox = malloc(sizeof(Rectangle)*6);
@@ -43,38 +42,37 @@ int main(){
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(scrWidth, scrHeight, "RealEdu");
 	SetTargetFPS(60);
-	for(int i = 0; i < 6; i++){
-		makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
-		Ypos += 100;
-	}
 	while(!WindowShouldClose()){
 		mousePos = GetMousePosition();
 		BeginDrawing();
 		ClearBackground(BLACK);
 		// Page Polling
-		
+		Ypos = 116;	
 		switch (scr) {
 			case GREET:
 				for(int i = 0; i < 2; i++){
-					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &scrPtr);
+					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
+					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &eduLvl);
+					Ypos += 100;
 				}
 				break;
-			case PRIMARY:
+			case YEAR:
 				for(int i = 0; i < 6; i++){
+					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
 					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &year);
-				}
-				break;
-			case SECONDARY:
-				for(int i = 0; i < 6; i++){
-					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &year);
+					Ypos += 100;
 				}
 				break;
 			case CATALOGUE:
+				printf("this is the catalogue\n");
 				break;
 			default:
+				perror("Something's very wrong\n");
 				break;
 		}
-		printf("scrPtr: %d\n", scrPtr);
+		printf("eduLvl: %d\n", eduLvl);
+		if(eduLvl) scr = YEAR;
+		printf("scr: %d\n", scr);
 		
 		EndDrawing();
 	}
