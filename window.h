@@ -11,5 +11,5 @@ typedef enum{
 
 void makeBox(Rectangle **border, Rectangle **padbox, /*char ***nameText, */int *optionPtr, int *Ypos, int *scrollOffset, const int *scrWidth, Vector2 *mousePos);
 
-void showBox(Rectangle **border, Rectangle **padbox, int *optionPtr, int *Ypos, int *scrollOffset, const int *scrWidth, Vector2 *mousePos, int *targetPtr);
+void showBox(Rectangle **border, Rectangle **padbox, int *optionPtr, int *Ypos, int *scrollOffset, const int *scrWidth, Vector2 *mousePos, int *targetPtr, char **nameText);
 #endif

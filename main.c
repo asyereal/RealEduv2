@@ -1,5 +1,7 @@
+#include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "read.h"
 //#include "fetch.h"
@@ -12,6 +14,8 @@ int main()
 	char **bookTitle;
 	char **bookFile;
 	char **bookUrl;
+	char **greetTitle = (char *[]){"Primary School", "Secondary School"};
+	char **yearTitle = (char *[]){strdup("Year 1"), strdup("Year 2"), strdup("Year 3"), strdup("Year 4"), strdup("Year 5"), strdup("Year 6")};
 	int fileRead = 0;
 	int maxLine = 0;
 
@@ -34,14 +38,26 @@ int main()
 	//fetch the file
 	//fetchFile();
 
-	// read and parse it
-	//readFile(&eduLvl, &year, &fileRead, &buff, &maxLine);
-
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(scrWidth, scrHeight, "RealEdu");
 	SetTargetFPS(60);
 	while(!WindowShouldClose()){
 		mousePos = GetMousePosition();
+		scrollOffset += GetMouseWheelMove() * scrollSpeed;
+
+		if(scrollOffset>0)
+			scrollOffset = 0;
+		// Event Polling
+		// DEV ONLY
+		if(IsKeyPressed(KEY_A))
+			scr = GREET;
+		if(IsKeyPressed(KEY_S))
+			scr = YEAR;
+		if(IsKeyPressed(KEY_D))
+			scr = CATALOGUE;
+		if(IsKeyPressed(KEY_Q))
+			break;
+
 		BeginDrawing();
 		ClearBackground(BLACK);
 
@@ -51,19 +67,18 @@ int main()
 			case GREET:
 				for(int i = 0; i < 2; i++){
 					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
-					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &eduLvl);
+					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &eduLvl, greetTitle);
 					Ypos += 100;
 				}
 				break;
 			case YEAR:
 				for(int i = 0; i < 6; i++){
 					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
-					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &year);
+					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &year, yearTitle);
 					Ypos += 100;
 				}
 				break;
 			case CATALOGUE:
-				//printf("eduLvl: %d\nyear: %d\nscr: %d\n", eduLvl, year, scr);
 				if(!fileRead){
 					readFile(&eduLvl, &year, &fileRead, &buff, &maxLine);
 					parseBuff(&buff, &bookTitle, &bookUrl, &bookFile, &maxLine);
@@ -71,12 +86,14 @@ int main()
 					if((tempBox = realloc(border, sizeof(Rectangle) * maxLine)) != NULL) border = tempBox;
 					if((tempBox = realloc(padbox, sizeof(Rectangle) * maxLine)) != NULL) padbox = tempBox;
 				}
-				//peek at file content
-				//for(int j=0; j<maxLine; j++) printf("%d: %s, %s, %s\n", j,bookTitle[j], bookFile[j], bookUrl[j]);
 				for(int i = 0; i < maxLine; i++){
 					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
-					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &bookPtr);
+					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &bookPtr, bookTitle);
 					Ypos += 100;
+					if(bookPtr){
+						printf("Opens book\n");
+						bookPtr = 0;
+					}
 				}
 				break;
 			default:
@@ -98,6 +115,7 @@ int main()
 		free(bookFile[i]);
 		free(bookUrl[i]);
 	}
+	for(int i = 0; i<6; i++) free(yearTitle[i]);
 	free(buff);
 	free(bookTitle);
 	free(bookFile);
@@ -106,6 +124,7 @@ int main()
 	//window.h memory
 	free(border);
 	free(padbox);
+
 	
 	return 0;
 }
