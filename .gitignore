@@ -3,3 +3,5 @@
 **/*.pdf
 **/*.json
 **/*test*
+**/*.o
+sandbox

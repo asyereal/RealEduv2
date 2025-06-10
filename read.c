@@ -21,8 +21,8 @@ void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLi
 	int lineCount = 0;
 	int i;
 
-	if(*isPrimary) snprintf(filename, 20, "./year%d.csv", *year);
-	else snprintf(filename, 20, "./form%d.csv", *year);
+	if(*isPrimary) snprintf(filename, 40, "sandbox/year%d.csv", *year);
+	else snprintf(filename, 20, "sandbox/form%d.csv", *year);
 
 	fp = fopen(filename, "r");
 	if(!fp){
@@ -60,15 +60,18 @@ void readFile(int *isPrimary, int *year, int *fileRead, char ***buff, int *maxLi
 	fclose(fp);
 }
 
-void parseBuff(char ***buff, char ***bookTitle, char ***bookUrl, int *maxLine){
+void parseBuff(char ***buff, char ***bookTitle, char ***bookUrl, char ***bookFile, int *maxLine){
 	*bookTitle = malloc(*maxLine * sizeof(char *));
+	*bookFile = malloc(*maxLine * sizeof(char *));
 	*bookUrl = malloc(*maxLine * sizeof(char *));
 	for(int i=0; i<*maxLine; i++){
 		(*bookTitle)[i] = malloc(MAX_LINE_LEN);
+		(*bookFile)[i] = malloc(MAX_LINE_LEN);
 		(*bookUrl)[i] = malloc(MAX_LINE_LEN);
 	}
 	for(int j=0; j<*maxLine; j++){
 		strcpy((*bookTitle)[j], strtok((*buff)[j], ","));
+		strcpy((*bookFile)[j], strtok(NULL, ","));
 		strcpy((*bookUrl)[j], strtok(NULL, ","));
 	}
 	return;
