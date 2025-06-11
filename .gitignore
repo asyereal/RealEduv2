@@ -4,6 +4,7 @@
 **/*.json
 **/*test*
 **/*.o
+.reuse
 sandbox
 test
 window

@@ -1,3 +1,11 @@
+/*
+ * RealEdu - Malaysian education e-textbook manager  
+ * Copyright (C) 2025  Muhammad Asyraf Bin Mohd Nuriman <asyraf50107@gmail.com>
+ * SPDX-FileCopyrightText: 2025 Muhammad Asyraf Bin Mohd Nuriman <asyraf50107@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +21,7 @@ int main()
 	char **bookTitle;
 	char **bookFile;
 	char **bookUrl;
-	char **greetTitle = (char *[]){"Primary School", "Secondary School"};
+	char **greetTitle = (char *[]){strdup("Primary School"), strdup("Secondary School")};
 	char **yearTitle = (char *[]){strdup("Year 1"), strdup("Year 2"), strdup("Year 3"), strdup("Year 4"), strdup("Year 5"), strdup("Year 6")};
 	int fileRead = 0;
 	int maxLine = 0;
@@ -53,6 +61,15 @@ int main()
 			scr = CATALOGUE;
 		if(IsKeyPressed(KEY_Q))
 			break;
+		if(IsKeyPressed(KEY_Z)){
+			eduLvl = 0;
+			year = 0;
+			scr = GREET;
+		}
+		if(IsKeyPressed(KEY_X)){
+			year = 0;
+			scr = YEAR;
+		}
 
 		BeginDrawing();
 		ClearBackground(BLACK);
@@ -68,6 +85,7 @@ int main()
 				}
 				break;
 			case YEAR:
+				//makeBack(&scrWidth, &greetTitle, &eduLvl);
 				for(int i = 0; i < 6; i++){
 					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
 					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &year, yearTitle);
@@ -82,12 +100,13 @@ int main()
 					if((tempBox = realloc(border, sizeof(Rectangle) * maxLine)) != NULL) border = tempBox;
 					if((tempBox = realloc(padbox, sizeof(Rectangle) * maxLine)) != NULL) padbox = tempBox;
 				}
+				//makeBack(&scrWidth, &greetTitle, &year);
 				for(int i = 0; i < maxLine; i++){
 					makeBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos);
 					showBox(&border, &padbox, &i, &Ypos, &scrollOffset, &scrWidth, &mousePos, &bookPtr, bookTitle);
 					Ypos += 100;
 					if(bookPtr){
-						printf("Opens book\n");
+						printf("bookTitle: %s\nbookUrl: %s\n", bookTitle[bookPtr], bookUrl[bookPtr]);
 						bookPtr = 0;
 					}
 				}

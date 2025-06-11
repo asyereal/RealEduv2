@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Muhammad Asyraf Bin Mohd Nuriman <asyraf50107@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 #include <stdio.h>
 #include <raylib.h>
 #include "window.h"
@@ -19,6 +25,18 @@ void showBox(Rectangle **border, Rectangle **padbox, int *optionPtr, int *Ypos, 
 		*targetPtr = *optionPtr + 1;
 		printf("optionPtr: %d\n", *optionPtr);
 	}
-	return;
 }
 
+int makeBack(const int *scrWidth, char ***backText, int *textPtr){
+	int nameSize = 60;
+	Rectangle border = {(*scrWidth-MeasureText((*backText)[*textPtr], nameSize))-40, 16, (MeasureText(*backText[*textPtr], nameSize)+28), 88};
+	Rectangle padbox = {(*scrWidth-MeasureText((*backText)[*textPtr], nameSize))-38, 18, (MeasureText(*backText[*textPtr], nameSize)+24), 84};
+	DrawRectangleRounded(border, 0.35f, 10, WHITE);
+	DrawRectangleRounded(padbox, 0.35f, 10, GetColor(R_PLUM));
+	DrawText(*backText[*textPtr], (*scrWidth-MeasureText(*backText[*textPtr], nameSize))-24, 30, nameSize, WHITE);
+	if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), padbox)){
+		printf("Pressed\n");
+		return 1;
+	}
+	return 0;
+}

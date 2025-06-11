@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Muhammad Asyraf Bin Mohd Nuriman <asyraf50107@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +38,7 @@ void readFile(int *eduLvl, int *year, int *fileRead, char ***buff, int *maxLine)
 	while(!(fp = fopen(getPath(filename), "r")) && retryLimit < 5){
 		perror("File doesn't exist! Downloading...\n");
 		fetchFile(url, getPath(filename));
-		retryLimit++;
+		++retryLimit;
 	}
 	*maxLine = countLine(fp);
 	*buff = malloc(*maxLine * sizeof(char *));
