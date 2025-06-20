@@ -4,6 +4,7 @@
 **/*.json
 **/*test*
 **/*.o
+list
 .reuse
 sandbox
 test

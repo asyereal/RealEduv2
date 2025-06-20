@@ -53,10 +53,12 @@ void readFile(int *eduLvl, int *year, int *fileRead, char ***buff, int *maxLine)
 		(*buff)[i] = malloc(MAX_LINE_LEN);
 		if(!(*buff)[i]){
 			perror("Line Alloc failed");
+			/*
 			for(int j = 0; j < i; j++){
 				free((*buff)[j]);
 			}
 			free(*buff);
+			*/
 			fclose(fp);
 			*fileRead = 0;
 			return;

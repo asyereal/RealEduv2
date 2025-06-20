@@ -1,24 +1,34 @@
 CC = cc
-CCFLAGS = -g -c
-LFLAGS = -lcurl -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-SRC = main.c read.c fetch.c window.c
-OBJ = main.o read.o fetch.o window.o
+SRCS = main.c read.c fetch.c window.c
+OBJS = $(SRCS:.c=.o)
+EXEC = test
 
-link: main.o read.o fetch.o window.o
-	$(CC) -o test $(OBJ) $(LFLAGS)
+CFLAGS = -Wall -Wextra -g
+LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lcurl
 
-compile: main.c read.c fetch.c window.c
-	$(CC) $(CCFLAGS) $(SRC)
+.PHONY: all clean
 
-buildfetcher:
-	$(CC) -o fetch fetch.c -lcurl
+all: $(EXEC)
 
-buildwindow:
-	$(CC) -o window window.c -g -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+$(EXEC): $(OBJS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+main.o: main.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+window.o: window.c window.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+fetch.o: fetch.c fetch.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+read.o: read.c read.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 run:
-	./test
+	./$(EXEC)
 
 clean:
-	rm ./test
+	rm $(EXEC) 
+	rm ${OBJS}
