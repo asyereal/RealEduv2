@@ -33,7 +33,7 @@ const char *getPath(char *filename){
 #ifdef _WIN3
 	snprintf(path, sizeof(path), "%s\\RealEdu\\%s", getenv("APPDATA"), filename);
 #else
-	snprintf(path, sizeof(path), "%s/Documents/c/again/list/%s", getenv("HOME"), filename);
+	snprintf(path, sizeof(path), "%s/.local/share/RealEdu/list/%s", getenv("HOME"), filename);
 #endif
 	return path;
 }

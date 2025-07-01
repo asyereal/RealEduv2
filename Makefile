@@ -1,34 +1,33 @@
 CC = cc
+SRCS = $(wildcard src/*.c)
+#OBJS = $(SRCS:.c=.o)
+OBJS = $(patsubst src/%.c,build/%.o,$(SRCS))
+EXEC = realedu
+BUILD_DIR = build
 
-SRCS = main.c read.c fetch.c window.c
-OBJS = $(SRCS:.c=.o)
-EXEC = test
-
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g -Iinclude
 LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -lcurl
 
 .PHONY: all clean
 
-all: $(EXEC)
+all: $(BUILD_DIR)/$(EXEC)
 
-$(EXEC): $(OBJS)
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/$(EXEC): $(OBJS) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-main.o: main.c
+$(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-window.o: window.c window.h
-	$(CC) $(CFLAGS) -c $< -o $@
-
-fetch.o: fetch.c fetch.h
-	$(CC) $(CFLAGS) -c $< -o $@
-
-read.o: read.c read.h
-	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD_DIR)/window.o: src/window.c include/window.h
+$(BUILD_DIR)/fetch.o: src/fetch.c include/fetch.h
+$(BUILD_DIR)/read.o: src/read.c include/read.h
+$(BUILD_DIR)/book.o: src/book.c include/book.h
 
 run:
-	./$(EXEC)
+	./$(BUILD_DIR)/$(EXEC)
 
 clean:
-	rm $(EXEC) 
-	rm ${OBJS}
+	rm -rf $(BUILD_DIR)
