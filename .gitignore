@@ -4,9 +4,11 @@
 **/*.json
 **/*test*
 **/*.o
+build
 list
 .reuse
 sandbox
 test
 window
 fetch
+.clangd
